@@ -2,7 +2,11 @@
 
 const readline = require("readline");
 
-let todoList = [];
+let todoList = [
+  "work on assignment 1",
+  "upload assignment to GitHub",
+  "write a report",
+];
 
 function listTodos() {
   if (todoList.length === 0) {
@@ -29,9 +33,16 @@ function askForTodo() {
   rl.question("Do you want to add a task? (y/n): ", function (answer) {
     if (answer.toLowerCase() === "y") {
       rl.question("Enter the task: ", function (task) {
-        addTodo(task);
-        rl.close();
-        listTodos();
+        try {
+          if (!task) throw new Error("Task cannot be empty \n");
+          addTodo(task);
+        } catch (error) {
+          console.error(error.message);
+        } finally {
+          rl.close();
+          listTodos();
+          askForTodo();
+        }
       });
     } else {
       rl.close();
@@ -40,6 +51,10 @@ function askForTodo() {
   });
 }
 
-console.log("Welcome to your to-do list.");
-listTodos();
-askForTodo();
+function main() {
+  console.log("Welcome to your to-do list.");
+  listTodos();
+  askForTodo();
+}
+
+main();
