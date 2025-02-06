@@ -1,4 +1,4 @@
-// To-Do list using NodeJS
+// To-Do list
 
 const readline = require("readline");
 
@@ -6,8 +6,9 @@ let todoList = [
   "work on assignment 1",
   "upload assignment to GitHub",
   "write a report",
-];
+]; // Initial to-do list
 
+// Function to list all to-dos
 function listTodos() {
   if (todoList.length === 0) {
     console.log("No tasks for today.");
@@ -19,16 +20,18 @@ function listTodos() {
   }
 }
 
+// Function to add a new to-do
 function addTodo(todo) {
   todoList.push(todo);
   console.log("Added to-do: " + todo);
 }
 
+// Function to remove a to-do by its number
 function removeTodo() {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-  });
+  }); // Create readline interface
 
   rl.question("Enter the number of the task to remove: ", function (number) {
     const index = parseInt(number) - 1;
@@ -36,14 +39,15 @@ function removeTodo() {
       todoList.splice(index, 1);
       console.log("Removed task number: " + number);
     } else {
-      console.log("Invalid task number.");
+      console.log("Invalid task number."); // Print error message for invalid index
     }
-    rl.close();
+    rl.close(); // Close the readline interface
     listTodos();
-    askForTodo();
+    askForTodo(); // Ask for the next action
   });
 }
 
+// Function to find a to-do by its name
 function findTodo() {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -56,7 +60,7 @@ function findTodo() {
       if (todoList[i] === task) {
         console.log("Found task at position: " + (i + 1));
         found = true;
-        break;
+        break; // Exit the loop once the task is found
       }
     }
     if (!found) {
@@ -67,6 +71,7 @@ function findTodo() {
   });
 }
 
+// Function to handle the user's action
 function handleAction(action) {
   switch (action.toLowerCase()) {
     case "add":
@@ -76,10 +81,10 @@ function handleAction(action) {
       });
       rlAdd.question("Enter the task: ", function (task) {
         try {
-          if (!task) throw new Error("Task cannot be empty");
+          if (!task) throw new Error("Task cannot be empty"); // Throw error if task is empty
           addTodo(task);
         } catch (error) {
-          console.error(error.message);
+          console.error(error.message); // Print error message
         } finally {
           rlAdd.close();
           listTodos();
@@ -103,6 +108,7 @@ function handleAction(action) {
   }
 }
 
+// Function to ask the user for the next action
 function askForTodo() {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -113,11 +119,12 @@ function askForTodo() {
     "What would you like to do? (add/remove/find/exit): ",
     function (action) {
       rl.close();
-      handleAction(action);
+      handleAction(action); // Handle the user's action
     }
   );
 }
 
+// Main function to start the application
 function main() {
   console.log("Welcome to your to-do list.");
   listTodos();
