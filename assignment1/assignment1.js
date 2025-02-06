@@ -24,6 +24,26 @@ function addTodo(todo) {
   console.log("Added to-do: " + todo);
 }
 
+function removeTodo() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rl.question("Enter the number of the task to remove: ", function (number) {
+    const index = parseInt(number) - 1;
+    if (index >= 0 && index < todoList.length) {
+      todoList.splice(index, 1);
+      console.log("Removed task number: " + number);
+    } else {
+      console.log("Invalid task number.");
+    }
+    rl.close();
+    listTodos();
+    askForTodo();
+  });
+}
+
 function askForTodo() {
   const rl = readline.createInterface({
     input: process.stdin,
@@ -34,7 +54,7 @@ function askForTodo() {
     if (answer.toLowerCase() === "y") {
       rl.question("Enter the task: ", function (task) {
         try {
-          if (!task) throw new Error("Task cannot be empty \n");
+          if (!task) throw new Error("Task cannot be empty");
           addTodo(task);
         } catch (error) {
           console.error(error.message);
@@ -45,8 +65,18 @@ function askForTodo() {
         }
       });
     } else {
-      rl.close();
-      listTodos();
+      rl.question(
+        "Do you want to remove a task? (y/n): ",
+        function (removeAnswer) {
+          if (removeAnswer.toLowerCase() === "y") {
+            rl.close();
+            removeTodo();
+          } else {
+            rl.close();
+            listTodos();
+          }
+        }
+      );
     }
   });
 }
