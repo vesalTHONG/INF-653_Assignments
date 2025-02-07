@@ -31,12 +31,12 @@ function addTodo() {
     try {
       if (!task) throw new Error("Task cannot be empty"); // Throw error if task is empty
       todoList.push(task); // Add the task to the list
-      console.log("Added to-do: " + task); // Confirm the addition
+      console.log("Added to-do: " + task);
     } catch (error) {
       console.error(error.message); // Print error message
     } finally {
-      rlAdd.close(); // Close the readline interface
-      listTodos(); // List all tasks
+      rlAdd.close();
+      listTodos();
       askForTodo(); // Ask for the next action
     }
   });
