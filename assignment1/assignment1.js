@@ -1,4 +1,4 @@
-// To-Do list
+// To-Do list using NodeJS
 
 const readline = require("readline");
 
@@ -21,9 +21,25 @@ function listTodos() {
 }
 
 // Function to add a new to-do
-function addTodo(todo) {
-  todoList.push(todo);
-  console.log("Added to-do: " + todo);
+function addTodo() {
+  const rlAdd = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  rlAdd.question("Enter the task: ", function (task) {
+    try {
+      if (!task) throw new Error("Task cannot be empty"); // Throw error if task is empty
+      todoList.push(task); // Add the task to the list
+      console.log("Added to-do: " + task); // Confirm the addition
+    } catch (error) {
+      console.error(error.message); // Print error message
+    } finally {
+      rlAdd.close(); // Close the readline interface
+      listTodos(); // List all tasks
+      askForTodo(); // Ask for the next action
+    }
+  });
 }
 
 // Function to remove a to-do by its number
@@ -75,22 +91,7 @@ function findTodo() {
 function handleAction(action) {
   switch (action.toLowerCase()) {
     case "add":
-      const rlAdd = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      });
-      rlAdd.question("Enter the task: ", function (task) {
-        try {
-          if (!task) throw new Error("Task cannot be empty"); // Throw error if task is empty
-          addTodo(task);
-        } catch (error) {
-          console.error(error.message); // Print error message
-        } finally {
-          rlAdd.close();
-          listTodos();
-          askForTodo();
-        }
-      });
+      addTodo();
       break;
     case "remove":
       removeTodo();
